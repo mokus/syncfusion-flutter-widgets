@@ -71,6 +71,8 @@ class TimeSlotViewSettings with Diagnosticable {
     this.dayFormat = 'EE',
     this.timeRulerSize = -1,
     this.timeTextStyle,
+    this.timeLabelAtHalfInterval = false,
+    this.showFullTimeRulerDividers = false,
     this.allDayPanelColor,
     this.numberOfDaysInView = -1,
   }) : assert(startHour >= 0 && startHour <= 24),
@@ -639,6 +641,16 @@ class TimeSlotViewSettings with Diagnosticable {
   /// ```
   final TextStyle? timeTextStyle;
 
+  /// Whether the time ruler text should be centered inside each interval cell.
+  ///
+  /// Defaults to `false`.
+  final bool timeLabelAtHalfInterval;
+
+  /// Whether the time ruler dividers should span the full ruler width.
+  ///
+  /// Defaults to `false`.
+  final bool showFullTimeRulerDividers;
+
   /// The color which fills the [SfCalendar] all day panel background.
   ///
   /// Defaults to null.
@@ -717,7 +729,9 @@ class TimeSlotViewSettings with Diagnosticable {
         otherStyle.dateFormat == dateFormat &&
         otherStyle.dayFormat == dayFormat &&
         otherStyle.timeRulerSize == timeRulerSize &&
-        otherStyle.timeTextStyle == timeTextStyle;
+        otherStyle.timeTextStyle == timeTextStyle &&
+        otherStyle.timeLabelAtHalfInterval == timeLabelAtHalfInterval &&
+        otherStyle.showFullTimeRulerDividers == showFullTimeRulerDividers;
   }
 
   @override
@@ -745,6 +759,18 @@ class TimeSlotViewSettings with Diagnosticable {
     properties.add(StringProperty('timeFormat', timeFormat));
     properties.add(StringProperty('dateFormat', dateFormat));
     properties.add(StringProperty('dayFormat', dayFormat));
+    properties.add(
+      DiagnosticsProperty<bool>(
+        'timeLabelAtHalfInterval',
+        timeLabelAtHalfInterval,
+      ),
+    );
+    properties.add(
+      DiagnosticsProperty<bool>(
+        'showFullTimeRulerDividers',
+        showFullTimeRulerDividers,
+      ),
+    );
     properties.add(IntProperty('numberOfDaysInView', numberOfDaysInView));
   }
 
@@ -764,6 +790,8 @@ class TimeSlotViewSettings with Diagnosticable {
       dayFormat,
       timeRulerSize,
       timeTextStyle,
+      timeLabelAtHalfInterval,
+      showFullTimeRulerDividers,
     );
   }
 }

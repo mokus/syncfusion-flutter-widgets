@@ -14552,11 +14552,13 @@ class _TimeRulerView extends CustomPainter {
         timeSlotViewSettings.startHour.toInt(),
         minute.toInt(),
       );
-      final String time = CalendarViewHelper.getLocalizedString(
-        date,
-        timeFormatStrings,
-        locale,
-      );
+      final String time = timeSlotViewSettings.timeLabelAtHalfInterval
+          ? i.toString()
+          : CalendarViewHelper.getLocalizedString(
+              date,
+              timeFormatStrings,
+              locale,
+            );
 
       final TextSpan span = TextSpan(text: time, style: timeTextStyle);
 
@@ -14583,22 +14585,32 @@ class _TimeRulerView extends CustomPainter {
         startYPosition = (size.height - _textPainter.height) / 2;
         startXPosition =
             isRTL ? startXPosition - padding : startXPosition + padding;
+      } else if (timeSlotViewSettings.timeLabelAtHalfInterval) {
+        startYPosition =
+            yPosition -
+            timeIntervalHeight +
+            ((timeIntervalHeight - _textPainter.height) / 2);
       }
 
       _textPainter.paint(canvas, Offset(startXPosition, startYPosition));
 
       if (!isTimelineView) {
-        final Offset start = Offset(
-          isRTL ? 0 : size.width - (startXPosition / 2),
-          yPosition,
-        );
-        final Offset end = Offset(
-          isRTL ? startXPosition / 2 : size.width,
-          yPosition,
-        );
+        final Offset start = timeSlotViewSettings.showFullTimeRulerDividers
+            ? Offset(0, yPosition)
+            : Offset(
+                isRTL ? 0 : size.width - (startXPosition / 2),
+                yPosition,
+              );
+        final Offset end = timeSlotViewSettings.showFullTimeRulerDividers
+            ? Offset(size.width, yPosition)
+            : Offset(
+                isRTL ? startXPosition / 2 : size.width,
+                yPosition,
+              );
         canvas.drawLine(start, end, _linePainter);
         yPosition += timeIntervalHeight;
-        if (yPosition.round() == size.height.round()) {
+        if (!timeSlotViewSettings.timeLabelAtHalfInterval &&
+            yPosition.round() == size.height.round()) {
           break;
         }
       } else {
