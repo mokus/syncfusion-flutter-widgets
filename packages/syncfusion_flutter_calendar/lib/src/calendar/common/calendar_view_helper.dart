@@ -17,7 +17,7 @@ const double kAllDayAppointmentHeight = 20;
 bool timeZoneLoaded = false;
 
 /// Signature for callback that used to get and update the calendar
-/// state details.
+/// state details.]
 typedef UpdateCalendarState =
     void Function(UpdateCalendarStateDetails updateCalendarStateDetails);
 
